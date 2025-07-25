@@ -1,8 +1,17 @@
 <div class="upload-container">
-  <h2>Enviar Arquivo</h2>
-  <div class="upload-controls">
+  <h2>Upload de Arquivo</h2>
+  <div class="controls">
     <input type="file" (change)="onFileSelected($event)" />
     <button [disabled]="!selectedFile" (click)="onUpload()">Enviar</button>
+  </div>
+
+  <br><br>
+  <hr>
+  <br><br>
+
+  <h2>Lista de dados</h2>
+  <div class="controls">
+    <button (click)="onListStudents()">Consultar</button>
   </div>
 
   <table class="student-table">
@@ -15,12 +24,28 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let student of students">
+      <tr *ngFor="let student of pagedStudents">
         <td>{{ student.id }}</td>
-        <td>{{ student.nome }}</td>
-        <td>{{ student.idade }}</td>
-        <td>{{ student.media }}</td>
+        <td>{{ student.name }}</td>
+        <td>{{ student.age }}</td>
+        <td>{{ student.average }}</td>
       </tr>
     </tbody>
   </table>
+
+  <!-- Controles de Paginação -->
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPage === 1">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Próxima</button>
+  </div>
+
+  <br><br>
+  <hr>
+  <br><br>
+
+  <h2>Relatório Excel</h2>
+  <div class="controls">
+    <button (click)="onReport()">Gerar</button>
+  </div>
 </div>
