@@ -34,17 +34,32 @@ export class AppComponent {
   }
 
   onUpload() {
-    if (!this.selectedFile) return;
+    if (!this.selectedFile) {
+      alert("Nenhum arquivo selecionado.");
+      return;
+    }
+
+    if (this.selectedFile.size === 0) {
+      alert("Arquivo vazio não é permitido.");
+      return;
+    }
+
+    const fileName = this.selectedFile.name;
+    const validExtension = /\.xlsx$/i;
+    if (!validExtension.test(fileName)) {
+      alert("Somente arquivos .xlsx são permitidos.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    this.http.post('http://localhost:8080/student', formData).subscribe({
-      next: response => alert("Dados processados com sucesso!"),
-      error: err => console.error('Erro no upload:', err)
-    });
+    this.http.post('http://localhost:8080/student', formData, { responseType: 'text' })
+      .subscribe({
+        next: response => alert("Dados processados com sucesso!"),
+        error: err => console.error('Erro no upload:', err)
+      });
   }
-
   onListStudents() {
     this.http.get<Student[]>('http://localhost:8080/student').subscribe({
       next: response => {
